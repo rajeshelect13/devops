@@ -1,0 +1,30 @@
+---
+- name: Terminate EC2 instance
+  hosts: webservers
+  gather_facts: False
+
+  vars:
+      region: us-east-1
+      instance_ids: i-0f27e445f1cac561c
+      # instance_type: t2.medium
+      # ami: ami-002cdac160d085b42 
+      # keypair: AnsibleTower # pem file name
+      subnetid: subnet-0813196377a141198
+      # vpcid: vpc-056c014233b87fcad
+      # sgid: sg-03840840498a1aa7d
+      # sgname: Ansible_Tower_SG
+  vars_files:
+    - aws_keys.yml
+  tasks:
+
+  - name: terminate an ec2 instance
+    ec2:
+      # aws_access_key: "{{ aws_access_key }}"
+      # aws_secret_key: "{{ aws_secret_key }}"
+      region: '{{ region }}'
+      instance_ids: '{{ instance_ids }}'
+      state: absent
+      vpc_subnet_id: '{{ subnetid }}'
+      wait: True
+    #register: ec2_out
+    # register: ec2

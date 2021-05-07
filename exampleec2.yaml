@@ -1,0 +1,26 @@
+---
+  hosts: localhost
+  connection: local
+  gather_facts: False
+  vars:
+    instance_type: t2.medium
+    security_group: Ansible_Tower_SG
+    image: ami-002cdac160d085b42
+    keypair: AnsibleTower 
+    region: us-east-1
+    count: 1
+  vars_files:
+    - aws_keys.yml
+  tasks:
+    - name: Launch the new EC2 Instance
+      ec2:
+        aws_access_key: "{{ aws_access_key }}"
+        aws_secret_key: "{{ aws_secret_key }}"
+        group: "{{ security_group }}"
+        instance_type: "{{ instance_type }}"
+        image: "{{ image }}"
+        wait: true 
+        region: "{{ region }}"
+        keypair: "{{ keypair }}"
+        count: "{{count}}"
+      register: ec2

@@ -1,0 +1,59 @@
+---
+- name: Provising EC2 instance
+  hosts: webservers
+  gather_facts: False
+
+  vars:
+      region: us-east-1
+      instance_type: t2.medium
+      ami: ami-0a2211ec1adaf54db 
+      keypair: AnsibleTower # pem file name
+      subnetid: subnet-0813196377a141198
+      vpcid: vpc-056c014233b87fcad
+      sgid: sg-03840840498a1aa7d
+      sgname: Ansible_Tower_SG
+  vars_files:
+    - aws_keys.yml
+  tasks:
+
+  - name: Create an ec2 instance
+    ec2:
+      # aws_access_key: "{{ aws_access_key }}"
+      # aws_secret_key: "{{ aws_secret_key }}"
+      key_name: "{{ keypair }}"
+      # group_id: "{{ sgid.group_id }}"
+      group: "{{ sgname }}"
+      instance_type: "{{ instance_type }}"
+      image: "{{ ami }}"
+      region: "{{ region }}"
+      wait: true
+      count: 1  # default
+      count_tag:
+        Name: Demo
+      instance_tags:
+        Name: rhel-imagebuilder-7.9
+      vpc_subnet_id: "{{ subnetid }}"
+      assign_public_ip: yes
+      user_data: |
+        #!/bin/bash
+        echo "hello rajesh" >> /home/ec2-user/test1.txt
+        yum update -y
+        yum install -y wget telent
+        yum install -y lorax-composer composer-cli cockpit-composer bash-completion
+        systemctl enable lorax-composer.socket && systemctl start lorax-composer.socket
+        systemctl enable osbuild-composer.socket && systemctl start osbuild-composer.socket 
+        systemctl enable cockpit.socket && systemctl start cockpit.socket
+        yum install -y firewalld
+        systemctl start firewalld && systemctl enable firewalld
+        firewall-cmd --add-service=cockpit && firewall-cmd --add-service=cockpit --permanent
+        source /etc/bash_completion.d/composer-cli
+        systemctl enable lorax-composer && systemctl start lorax-composer
+        systemctl enable osbuild-composer && systemctl start osbuild-composer
+        useradd -p $(openssl passwd -1 DSHp@ssword2020) rajesh 
+        echo 'rajesh ALL= (ALL)  ALL' >> /etc/sudoers
+      termination_protection: yes
+      volumes:
+        - device_name: /dev/sda1
+          volume_type: gp2
+          volume_size: 50
+    register: ec2
