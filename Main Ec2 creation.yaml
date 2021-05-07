@@ -8,9 +8,9 @@
       instance_type: t2.medium
       ami: ami-002cdac160d085b42 
       keypair: AnsibleTower # pem file name
-      subnetid: subnet-0813196377a141198
-      vpcid: vpc-056c014233b87fcad
-      sgid: sg-03840840498a1aa7d
+      subnetid: subnet-ID
+      vpcid: vpc-ID
+      sgid: sg-ID
       sgname: Ansible_Tower_SG
   vars_files:
     - aws_keys.yml
@@ -31,12 +31,12 @@
       count_tag:
         Name: Demo
       instance_tags:
-        Name: OptimozAnsible
+        Name: xyzAnsible
       vpc_subnet_id: "{{ subnetid }}"
       assign_public_ip: yes
       user_data: |
         #!/bin/bash
-        echo "hello rajesh" >> /home/ec2-user/test1.txt
+        echo "hello raj" >> /home/ec2-user/test1.txt
         yum update -y
         yum install -y wget telnet
         yum install -y lorax-composer composer-cli cockpit-composer bash-completion
@@ -49,7 +49,7 @@
         source /etc/bash_completion.d/composer-cli
         systemctl enable lorax-composer && systemctl start lorax-composer
         systemctl enable osbuild-composer && systemctl start osbuild-composer
-        useradd -p $(openssl passwd -1 DSHp@ssword2020) kevin 
+        useradd -p $(openssl passwd -1 ***) kevin 
         echo 'kevin ALL= (ALL)  ALL' >> /etc/sudoers
       termination_protection: yes
       # termination protection yes means when u try to terminate instance, it's failed.so you need to 
