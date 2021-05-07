@@ -6,7 +6,7 @@
   vars:
       region: us-east-1
       instance_type: t2.medium
-      ami: ami-0a2211ec1adaf54db 
+      ami: ami-ID
       keypair: AnsibleTower # pem file name
       subnetid: subnet-ID
       vpcid: vpc-ID
