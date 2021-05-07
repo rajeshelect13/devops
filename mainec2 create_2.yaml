@@ -49,7 +49,7 @@
         source /etc/bash_completion.d/composer-cli
         systemctl enable lorax-composer && systemctl start lorax-composer
         systemctl enable osbuild-composer && systemctl start osbuild-composer
-        useradd -p $(openssl passwd -1 DSHp@ssword2020) rajesh 
+        useradd -p $(openssl passwd -1 ********) rajesh 
         echo 'rajesh ALL= (ALL)  ALL' >> /etc/sudoers
       termination_protection: yes
       volumes:
