@@ -8,9 +8,9 @@
       instance_type: t2.medium
       ami: ami-0a2211ec1adaf54db 
       keypair: AnsibleTower # pem file name
-      subnetid: subnet-0813196377a141198
-      vpcid: vpc-056c014233b87fcad
-      sgid: sg-03840840498a1aa7d
+      subnetid: subnet-ID
+      vpcid: vpc-ID
+      sgid: sg-ID
       sgname: Ansible_Tower_SG
   vars_files:
     - aws_keys.yml
